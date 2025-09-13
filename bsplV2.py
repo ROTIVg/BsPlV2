@@ -31,7 +31,7 @@ def escolher_dispositivo():
     return escolha
 
 def main():
-    print("=== YouTube Playlist Downloader Rápido ===")
+    print("=== YouTube Playlist Downloader ===")
 
     playlist_url = inquirer.text(message="Cole a URL da playlist:").execute()
 
@@ -50,18 +50,23 @@ def main():
         choices=["Vídeo", "Áudio MP3"]
     ).execute()
 
-    cmd = ["yt-dlp", "-q", "--concurrent-fragments", "5", "--concurrent-downloads", "4"]
-
     if tipo == "Vídeo":
-        cmd += ["-f", "bestvideo+bestaudio",
-                "-o", os.path.join(dest_path, "%(playlist_title)s/%(title)s.%(ext)s"),
-                playlist_url]
+        cmd = [
+            "yt-dlp",
+            "-f", "bestvideo+bestaudio",
+            "-o", os.path.join(dest_path, "%(playlist_title)s/%(title)s.%(ext)s"),
+            playlist_url
+        ]
     else:
-        cmd += ["-x", "--audio-format", "mp3",
-                "-o", os.path.join(dest_path, "%(playlist_title)s/%(title)s.%(ext)s"),
-                playlist_url]
+        cmd = [
+            "yt-dlp",
+            "-x",
+            "--audio-format", "mp3",
+            "-o", os.path.join(dest_path, "%(playlist_title)s/%(title)s.%(ext)s"),
+            playlist_url
+        ]
 
-    print("Iniciando download paralelo e otimizado...")
+    print("Iniciando download...")
     subprocess.run(cmd)
     print("Download concluído!")
 
